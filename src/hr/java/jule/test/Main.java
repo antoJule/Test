@@ -15,7 +15,9 @@ import org.jgap.impl.StringGene;
 
 public class Main {
 	
-	public static final int VELICINA_POPULACIJE=500;
+	public static Scanner scanner = new Scanner(System.in);
+	
+	public static final int VELICINA_POPULACIJE=25;
 	
 	public static Configuration algorithmSetup(String notes) throws InvalidConfigurationException {
 		
@@ -33,20 +35,33 @@ public class Main {
 		return conf;
 	}
 	
-
+	public static String getNotes() {
+		System.out.println("Upisi trazene note:");
+		String note=scanner.nextLine();
+		return note;
+	}
+	
+	
+	
 	public static void main(String[] args) throws InvalidConfigurationException {
-		Scanner scanner = new Scanner(System.in);
-		String note;
-		
-		System.out.println("Upisite note:");
-		note=scanner.nextLine();
+		String note=getNotes();
 		
 		Configuration algorithmSetup=algorithmSetup(note);
 		Genotype population=Genotype.randomInitialGenotype(algorithmSetup);
-		for(int i=0;i<10;i++) {
-			System.out.println(population.getFittestChromosome());
+		int brojac=0;
+		while(population.getFittestChromosome().getFitnessValue()<1.0) {
 			population.evolve();
+			brojac++;
+			if(brojac%50==0) {
+				System.out.println(population.getFittestChromosome());
+				System.out.println(population.getFittestChromosome().getFitnessValue());
+			}
 		}
+		
+		System.out.println(population.getFittestChromosome());
+		System.out.println(brojac);
+		
+		
 		
 	}
 }
